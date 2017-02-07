@@ -61,11 +61,14 @@ class Graph():
 
 
 if __name__ == "__main__":
+    import logging
+    logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO, filename='deepwalk.log')
+    sys.argv[2]
     G = Graph()
     G.load_edgelist(sys.argv[1])
-    model = Word2Vec(min_count=0)
+    model = Word2Vec(min_count=0,size=100,window=10,workers=24)
     model.raw_vocab = G.vocab()
     model.corpus_count = G.path_length*G.num_paths*len(G.Graph)
     model.finalize_vocab()
     model.train(G)
-    model.save_word2vec_format('text')
+    model.save_word2vec_format(sys.argv[2])
